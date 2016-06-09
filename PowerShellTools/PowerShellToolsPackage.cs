@@ -76,7 +76,8 @@ namespace PowerShellTools
                             101,
                             ShowSmartIndent = true,
                             ShowDropDownOptions = true,
-                            EnableCommenting = true)]
+                            EnableCommenting = true,
+                            RequestStockColors = true)]
     [ProvideEditorFactory(typeof(PowerShellEditorFactory), 114, TrustLevel = __VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted)]
     [ProvideBraceCompletion(PowerShellConstants.LanguageName)]
     // This attribute is needed to let the shell know that this package exposes some menus.
