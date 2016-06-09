@@ -651,7 +651,7 @@ namespace PowerShellTools.Repl
         /// </summary>
         public void ClearScreen()
         {
-            ClearScreen(insertInputPrompt: false);
+            ClearScreen(insertInputPrompt: true);
         }
 
         private void ClearScreen(bool insertInputPrompt)

@@ -139,6 +139,12 @@ namespace PowerShellTools.Intellisense
             {
                 currentActiveBuffer = textView.BufferGraph.GetTextBuffers(p => p.ContentType.TypeName.Equals(PowerShellConstants.LanguageName, StringComparison.Ordinal))
                                                                    .LastOrDefault();
+
+                if (currentActiveBuffer == null)
+                {
+                    return -1;
+                }
+
                 var currentSnapshotPoint = textView.BufferGraph.MapDownToBuffer(textView.Caret.Position.BufferPosition,
                                                                                PointTrackingMode.Positive,
                                                                                currentActiveBuffer,
