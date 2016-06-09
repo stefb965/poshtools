@@ -39,8 +39,8 @@ namespace PowerShellTools.Commands
 
         protected static SelectedItem GetSelectedItem(DTE2 applicationObject)
         {
-            if (applicationObject.Solution == null)
-                return null;
+           // if (applicationObject.Solution == null)
+            //    return null;
             if (applicationObject.SelectedItems.Count == 1)
                 return applicationObject.SelectedItems.Item(1);
             return null;
@@ -59,6 +59,11 @@ namespace PowerShellTools.Commands
 
             try
             {
+                if (projProperties == null)
+                {
+                    return projItem.FileNames[1];
+                }
+
                 string path = projProperties.Item("FullPath").Value as string;    //Item throws if not found.
 
                 Debug.Assert(path != null, "Path isn't a string");
