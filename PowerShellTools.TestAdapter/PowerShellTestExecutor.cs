@@ -154,7 +154,7 @@ namespace PowerShellTools.TestAdapter
             foreach (PSObject result in results)
             {
                 var describe = result.Properties["Describe"].Value as string;
-                var errorMessage = $"Error in {fi.FullName}";
+                var errorMessage = string.Format("Error in {0}", fi.FullName);
 
                 // Pester returns either the "describe" or an errorMessage when there was an error/exception while running the script
                 if (describeName.Equals(describe, StringComparison.OrdinalIgnoreCase) || errorMessage.Equals(describe, StringComparison.OrdinalIgnoreCase))
