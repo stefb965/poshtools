@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Adapter;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Logging;
 using PowerShellTools.TestAdapter.Properties;
+using System.Collections.ObjectModel;
 
 namespace PowerShellTools.TestAdapter
 {
@@ -139,9 +140,11 @@ namespace PowerShellTools.TestAdapter
                 .AddParameter("TestName", describeName)
                 .AddParameter("PassThru");
 
-            var pesterResult = powerShell.Invoke().FirstOrDefault();
+            var pesterResults = powerShell.Invoke();
+            powerShell.Commands.Clear();
 
-            var results = pesterResult.Properties["TestResult"].Value as Array;
+            // The test results are not necessary stored in the first PSObject.
+            var results = GetTestResults(pesterResults);
 
             TestOutcome testOutcome = TestOutcome.NotFound;
 
@@ -151,10 +154,13 @@ namespace PowerShellTools.TestAdapter
             foreach (PSObject result in results)
             {
                 var describe = result.Properties["Describe"].Value as string;
-                if (describeName.Equals(describe, StringComparison.OrdinalIgnoreCase))
+                var errorMessage = string.Format("Error in {0}", fi.FullName);
+
+                // Pester returns either the "describe" or an errorMessage when there was an error/exception while running the script
+                if (describeName.Equals(describe, StringComparison.OrdinalIgnoreCase) || errorMessage.Equals(describe, StringComparison.OrdinalIgnoreCase))
                 {
                     var currentOutcome = GetOutcome(result.Properties["Result"].Value as string);
-                    if(currentOutcome == TestOutcome.Failed)
+                    if (currentOutcome == TestOutcome.Failed)
                     {
                         testOutcome = TestOutcome.Failed;
                     }
@@ -223,6 +229,22 @@ namespace PowerShellTools.TestAdapter
             }
 
             return pesterPath;
+        }
+
+        /// <summary>
+        /// Gets test results from the <see cref="PSObject"/> collection.
+        /// </summary>
+        /// <param name="psObjects">
+        /// The <see cref="PSObject"/> collection as returned from the <c>Invoke-Pester</c> command
+        /// </param>
+        /// <returns>
+        /// The test results as <see cref="Array"/>
+        /// </returns>
+        private static Array GetTestResults(Collection<PSObject> psObjects)
+        {
+            var resultObject = psObjects.Where(o => o.Properties["TestResult"] != null).FirstOrDefault();
+
+            return resultObject.Properties["TestResult"].Value as Array;
         }
 
         private static string GetModulePath(string moduleName, string root)
