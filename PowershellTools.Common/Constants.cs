@@ -65,7 +65,7 @@ namespace PowerShellTools.Common
         /// <summary>
         /// Latest PowerShell install link
         /// </summary>
-        public const string PowerShellInstallFWLink = "http://go.microsoft.com/fwlink/?LinkID=524571";
+        public const string PowerShellInstallFWLink = "https://go.microsoft.com/fwlink/?LinkID=524571";
 
         /// <summary>
         /// This is the GUID in string form of the Visual Studio UI Context when in PowerShell REPL window is opened.
