@@ -22,7 +22,7 @@
 
   <PropertyGroup>
     <!-- If we are building on a local dev machine, pretend we're given this other version number. Dev builds will have this number.-->
-    <appveyor_build_version Condition=" '$(appveyor_build_version)' == '' ">1.2.3.4</appveyor_build_version>
+    <appveyor_build_version Condition=" '$(appveyor_build_version)' == '' ">99.2.3.4</appveyor_build_version>
   </PropertyGroup>
 
   <PropertyGroup>
