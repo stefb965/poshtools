@@ -24,6 +24,7 @@ namespace PowerShellTools.ServiceManagement
         private const uint TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE;
         private const int SW_HIDE = 0;
 
+        private static readonly TimeSpan HostProcessSignalTimeout = TimeSpan.FromSeconds(5);
         private static readonly ILog Log = LogManager.GetLogger(typeof(PowershellHostProcessHelper));
 
         private static Guid EndPointGuid { get; set; }
@@ -80,10 +81,8 @@ namespace PowerShellTools.ServiceManagement
             powerShellHostProcess.BeginOutputReadLine();
             powerShellHostProcess.BeginErrorReadLine();
 
-            // For now we dont set timeout and wait infinitely
-            // Further UI work might enable some better UX like retry logic for case where remote process being unresponsive
-            // By then we will bring timeout back here.
-            bool success = readyEvent.WaitOne();
+            // Wait for ready signal from the host process.
+            bool success = readyEvent.WaitOne(HostProcessSignalTimeout);
             readyEvent.Close();
 
             if (!success)

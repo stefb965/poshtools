@@ -1,5 +1,7 @@
 ﻿using PowerShellTools.Common;
+using PowerShellTools.Common.Logging;
 using PowerShellTools.Common.ServiceManagement.DebuggingContract;
+using PowerShellTools.Common.ServiceManagement.ExplorerContract;
 using PowerShellTools.Common.ServiceManagement.IntelliSenseContract;
 using PowerShellTools.HostService.ServiceManagement;
 using PowerShellTools.HostService.ServiceManagement.Debugging;
@@ -16,9 +18,6 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using PowerShellTools.Common.Logging;
-using PowerShellTools.Common.ServiceManagement.ExplorerContract;
-using PowerShellTools.HostService.ServiceManagement;
 
 namespace PowerShellTools.HostService
 {
@@ -38,6 +37,8 @@ namespace PowerShellTools.HostService
 
         void App_Startup(object sender, StartupEventArgs e)
         {
+            ArgumentException argException = new ArgumentException();
+
             Log.DebugFormat("Host process started. Arguments: {0}", string.Join(" ", e.Args));
             // Application is running
             // Process command line e.Args
@@ -47,14 +48,15 @@ namespace PowerShellTools.HostService
                 && e.Args[2].StartsWith(Constants.ReadyEventUniqueNameArg, StringComparison.OrdinalIgnoreCase)))
             {
                 Log.Error("Invalid args");
-                return;
+                // Exit the current process because of the invalid arg(s). The HResult value should be 0x80070057 (E_INVALIDARG) which is well-known.
+                Environment.Exit(argException.HResult);
             }
 
             EndpointGuid = e.Args[0].Remove(0, Constants.UniqueEndpointArg.Length);
             if (EndpointGuid.Length != Guid.Empty.ToString().Length)
             {
                 Log.Error("Invalid EndpointGUID");
-                return;
+                Environment.Exit(argException.HResult);
             }
 
             int vsProcessId;
@@ -64,7 +66,7 @@ namespace PowerShellTools.HostService
                             out vsProcessId))
             {
                 Log.Error("Invalid vsProcessId");
-                return;
+                Environment.Exit(argException.HResult);
             }
 
             VsProcessId = vsProcessId;
@@ -74,7 +76,7 @@ namespace PowerShellTools.HostService
             if (readyEventName.Length != (Constants.ReadyEventPrefix.Length + Guid.Empty.ToString().Length))
             {
                 Log.Error("Invalid readyEventName");
-                return;
+                Environment.Exit(argException.HResult);
             }
 
             // Step 1: Create the NetNamedPipeBinding. 
@@ -87,9 +89,17 @@ namespace PowerShellTools.HostService
             binding.MaxReceivedMessageSize = Constants.BindingMaxReceivedMessageSize;
 
             // Step 2: Create the service host.
-            CreatePowerShellIntelliSenseServiceHost(baseAddress, binding);
-            CreatePowerShellDebuggingServiceHost(baseAddress, binding);
-            CreatePowerShellExplorerServiceHost(baseAddress, binding);
+            try
+            {
+                CreatePowerShellIntelliSenseServiceHost(baseAddress, binding);
+                CreatePowerShellDebuggingServiceHost(baseAddress, binding);
+                CreatePowerShellExplorerServiceHost(baseAddress, binding);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to create service host.", ex);
+                Environment.Exit(ex.HResult);
+            }
 
             // Step 3: Signal parent process that host is ready so that it can proceed.
             EventWaitHandle readyEvent = new EventWaitHandle(false, EventResetMode.ManualReset, readyEventName);
