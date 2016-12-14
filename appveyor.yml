@@ -15,6 +15,7 @@ environment:
     secure: j866O0PgCqwsA8OLhNTgnVbKhuNiu5pPWncpyhTe6xs=
   matrix:
   - VisualStudioVersion: 14.0
+  - VisualStudioVersion: 15.0
 
 before_build:
   - nuget restore
@@ -24,12 +25,12 @@ build:
   verbosity: minimal
 
 artifacts:
-  - path: bin\VS120\Release\PowerShellTools.12.0.vsix
-    name: PowerShellTools.12.0.vsix
   - path: bin\VS140\Release\PowerShellTools.14.0.vsix
     name: PowerShellTools.14.0.vsix
   - path: bin\VS140\Release\PDB
-  - path: bin\VS120\Release\PDB
+  - path: bin\VS150\Release\PowerShellTools.15.0.vsix
+    name: PowerShellTools.15.0.vsix
+  - path: bin\VS150\Release\PDB
 assembly_info:
   patch: true
   file: Build\AssemblyVersion.cs
