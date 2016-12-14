@@ -54,7 +54,6 @@
     <StartArguments>/rootsuffix Exp</StartArguments>
     <DeployExtension>True</DeployExtension>
     <CreateVsixContainer>True</CreateVsixContainer>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -85,6 +84,7 @@
     <Reference Include="Microsoft.VisualStudio.Text.UI, Version=$(VSTarget).0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Text.UI.Wpf, Version=$(VSTarget).0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" Condition="'$(VSTarget)' == '15.0'"  />
     <Reference Include="Microsoft.VisualStudio.Shell.$(VSTarget)">
       <Private>false</Private>
     </Reference>

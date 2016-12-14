@@ -62,7 +62,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PowerShellTools</RootNamespace>
     <AssemblyName>PowerShellTools.$(VSTarget)</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -141,11 +140,16 @@
     <Reference Include="Microsoft.VisualStudio.Text.UI.Wpf, Version=$(VSTarget).0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.$(VSTarget)" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.$(VSTarget)" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" Condition="'$(VSTarget)' == '15.0'"  />
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.14.0" Condition="'$(VSTarget)' == '14.0' OR '$(VSTarget)' == '15.0'" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0" />
     <Reference Include="Microsoft.VisualStudio.Threading, Version=$(VSTarget).0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Windows.Design.Host">
+    <Reference Include="Microsoft.Windows.Design.Host" Condition="'$(VSTarget)' != '15.0'">
       <HintPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio $(VSTarget)\Common7\IDE\PrivateAssemblies\Microsoft.Windows.Design.Host.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Design.Host" Condition="'$(VSTarget)' != '14.0'">
+      <HintPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.Windows.Design.Host.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -715,6 +719,7 @@
     <EmbeddedResource Include="Project\Resources\CommonImageList.bmp" />
     <EmbeddedResource Include="Resources\PowerShellInteractiveWindow_16x.png" />
     <Compile Include="Project\ProvideCodeExpansionsAttribute.cs" />
+    <None Include="packages.config" />
     <None Include="Resources\WarningIcon.ico" />
     <None Include="Resources\ErrorStatus.png" />
     <Content Include="Snippets\SnippetsIndex.xml">

@@ -33,6 +33,7 @@
     <VsVersionName Condition="'$(VsVersionName)'==''">VS100</VsVersionName>
 
     <TargetFrameworkVersion Condition="'$(VSTarget)' == '10.0'">v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(VSTarget)' == '15.0'">v4.6</TargetFrameworkVersion>
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v4.5</TargetFrameworkVersion>
 
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -9,7 +9,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PowerShellTools.Test</RootNamespace>
     <AssemblyName>PowerShellTools.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -58,8 +57,13 @@
     <Reference Include="Microsoft.VisualStudio.Debugger.InteropA" />
     <Reference Include="Microsoft.VisualStudio.Language.Intellisense, Version=$(VSTarget).0.0" />
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Microsoft.VisualStudio.TestPlatform.ObjectModel">
-      <HintPath>$(MSBuildProgramFiles32)\Microsoft Visual Studio $(VisualStudioVersion)\Common7\IDE\CommonExtensions\Microsoft\TestWindow\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
+   <Reference Include="Microsoft.VisualStudio.TestPlatform.ObjectModel">
+      <HintPath>$(DevEnvDir)CommonExtensions\Microsoft\TestWindow\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestWindow.Interfaces">
+      <HintPath>$(DevEnvDir)CommonExtensions\Microsoft\TestWindow\Microsoft.VisualStudio.TestWindow.Interfaces.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Text.Data, Version=$(VSTarget).0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Text.Logic, Version=$(VSTarget).0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
